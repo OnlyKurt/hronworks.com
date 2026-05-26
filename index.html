@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AP-smart business a.s. — Hromadné zastupování věřitelů Wood Seeds</title>
+  <meta name="description" content="Vaše dluhopisy nejsou spláceny? Sjednoťte svůj hlas s dalšími poškozenými investory pod záštitou silné akciové společnosti. Hromadné zastupování věřitelů a vymáhání pohledávek." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-navy:       #0B1B3D;
+      --color-navy-deep:  #07112A;
+      --color-slate:      #4A5568;
+      --color-slate-light:#718096;
+      --color-gold:       #D4AF37;
+      --color-gold-light: #E8CC6A;
+      --color-white:      #FFFFFF;
+      --color-light:      #F7F8FA;
+      --color-light-alt:  #EEF0F5;
+      --font-display: 'Lora', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --max-w: 1200px;
+      --section-py: 96px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-navy);
+      background: var(--color-white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── UTILITIES ──────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    @media (min-width: 768px) { .container { padding: 0 40px; } }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border-radius: 2px;
+    }
+    .btn-gold { background: var(--color-gold); color: var(--color-navy); }
+    .btn-gold:hover {
+      background: var(--color-gold-light);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(212,175,55,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--color-gold);
+      border: 1px solid var(--color-gold);
+    }
+    .btn-outline:hover { background: var(--color-gold); color: var(--color-navy); }
+    .btn-lg { padding: 18px 40px; font-size: 15px; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 16px;
+    }
+    .section-label--dark { color: var(--color-slate-light); }
+
+    h2.section-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 4.2vw, 48px);
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--color-navy);
+    }
+    h2.section-title--white { color: var(--color-white); }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--color-slate);
+      line-height: 1.7;
+      max-width: 580px;
+    }
+    .section-subtitle--white { color: rgba(255,255,255,0.7); }
+
+    .gold-rule { width: 48px; height: 2px; background: var(--color-gold); margin: 24px 0; }
+
+    /* ── NAVIGATION ─────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+      padding: 20px 0;
+    }
+    #nav.scrolled {
+      background: var(--color-navy);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06), 0 4px 24px rgba(0,0,0,0.3);
+      padding: 14px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo */
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      gap: 3px;
+    }
+    .nav-logo-name {
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-white);
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+    /* "smart" italicised for style */
+    .nav-logo-name em {
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+    }
+    .nav-logo-sub {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--color-gold);
+      opacity: 0.9;
+      text-transform: uppercase;
+    }
+
+    .nav-links { display: none; align-items: center; gap: 32px; list-style: none; }
+    @media (min-width: 1024px) { .nav-links { display: flex; } }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.78);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--color-gold); }
+    .nav-cta { display: none; }
+    @media (min-width: 1024px) { .nav-cta { display: inline-flex; } }
+
+    /* Hamburger */
+    .hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    @media (min-width: 1024px) { .hamburger { display: none; } }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--color-white);
+      transition: all 0.25s; transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; flex-direction: column;
+      background: var(--color-navy-deep);
+      border-top: 1px solid rgba(212,175,55,0.2);
+      padding: 24px; gap: 4px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 15px; font-weight: 500;
+      color: rgba(255,255,255,0.82);
+      text-decoration: none; padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--color-gold); }
+    .mobile-menu .btn { margin-top: 16px; align-self: flex-start; }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      background: var(--color-navy);
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 120px 0 80px;
+    }
+    .hero-bg-pattern {
+      position: absolute; inset: 0; opacity: 0.04;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(212,175,55,0.5) 80px),
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(212,175,55,0.5) 80px);
+    }
+    .hero-glow {
+      position: absolute; top: -200px; right: -100px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--color-gold); margin-bottom: 32px;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--color-gold);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 400;
+      color: var(--color-white);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 28px;
+    }
+    .hero-headline em { font-style: italic; color: var(--color-gold); font-weight: 400; }
+    .hero-subheadline {
+      font-size: clamp(16px, 2vw, 18px);
+      color: rgba(255,255,255,0.68);
+      line-height: 1.8; max-width: 620px;
+      margin-bottom: 48px; font-weight: 300;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .hero-btn { padding: 16px 32px; font-size: 14px; }
+    .hero-trust {
+      display: flex; flex-wrap: wrap; gap: 32px;
+      margin-top: 72px; padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-stat-num {
+      font-family: var(--font-display);
+      font-size: 26px; font-weight: 600; color: var(--color-gold); display: block;
+    }
+    .hero-stat-label {
+      font-size: 12px; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500;
+    }
+    .hero-divider { width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; }
+
+    /* ── PROBLEM ────────────────────────────────────────── */
+    #problem { background: var(--color-light); padding: var(--section-py) 0; }
+    .problem-intro {
+      display: grid; gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .problem-intro { grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    }
+    .problem-quote {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 3vw, 28px);
+      color: var(--color-navy);
+      font-style: italic;
+      line-height: 1.45;
+      position: relative;
+      padding-left: 28px;
+    }
+    .problem-quote::before {
+      content: ''; position: absolute;
+      left: 0; top: 4px; bottom: 4px; width: 3px; background: var(--color-gold);
+    }
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 56px;
+    }
+    @media (min-width: 768px) { .problem-grid { grid-template-columns: repeat(3, 1fr); } }
+    .problem-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-light-alt);
+      padding: 32px 28px;
+      border-top: 3px solid var(--color-gold);
+      transition: box-shadow 0.25s ease;
+    }
+    .problem-card:hover { box-shadow: 0 8px 32px rgba(11,27,61,0.08); }
+    .problem-icon { width: 40px; height: 40px; margin-bottom: 16px; color: var(--color-gold); }
+    .problem-card h3 {
+      font-family: var(--font-display); font-size: 19px; font-weight: 600;
+      margin-bottom: 10px; color: var(--color-navy);
+    }
+    .problem-card p { font-size: 14px; color: var(--color-slate); line-height: 1.7; }
+
+    /* ── SOLUTION ───────────────────────────────────────── */
+    #reseni {
+      background: var(--color-navy); padding: var(--section-py) 0;
+      position: relative; overflow: hidden;
+    }
+    #reseni::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 40px,
+        rgba(212,175,55,0.015) 40px, rgba(212,175,55,0.015) 41px
+      );
+    }
+    .solution-layout {
+      display: grid; gap: 60px; position: relative; z-index: 2;
+    }
+    @media (min-width: 900px) {
+      .solution-layout { grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    }
+    .solution-body p {
+      color: rgba(255,255,255,0.7); font-size: 16px; line-height: 1.75; margin-bottom: 20px;
+    }
+    .solution-highlight {
+      background: rgba(212,175,55,0.1);
+      border-left: 3px solid var(--color-gold);
+      padding: 20px 24px; margin: 28px 0;
+      color: var(--color-white); font-size: 15px; line-height: 1.7;
+    }
+    .solution-highlight strong { color: var(--color-gold); }
+
+    /* Block vs solo comparison */
+    .block-vs {
+      display: flex; flex-direction: column; gap: 3px; margin-top: 8px;
+    }
+    .bv-header {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .bv-col-label-solo { color: rgba(255,255,255,0.3); padding: 0 18px 6px; }
+    .bv-col-label-ours { color: var(--color-gold); padding: 0 18px 6px; }
+    .bv-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .bv-cell {
+      padding: 14px 18px; font-size: 14px; line-height: 1.5;
+    }
+    .bv-cell--solo {
+      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.42);
+    }
+    .bv-cell--ours {
+      background: rgba(212,175,55,0.1);
+      color: var(--color-white);
+      border-left: 2px solid var(--color-gold);
+    }
+    .bv-cell-label {
+      display: block; font-size: 10px; color: rgba(255,255,255,0.35);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .bv-cell--ours .bv-cell-label { color: rgba(212,175,55,0.7); }
+
+    /* ── WHY AP-SMART ───────────────────────────────────── */
+    #proc-my { background: var(--color-light); padding: var(--section-py) 0; }
+    .pillars-header {
+      display: grid; gap: 40px; margin-bottom: 64px;
+    }
+    @media (min-width: 768px) {
+      .pillars-header { grid-template-columns: 1fr 1fr; align-items: end; gap: 60px; }
+    }
+    .pillars-grid {
+      display: grid; grid-template-columns: 1fr; gap: 24px;
+    }
+    @media (min-width: 600px) { .pillars-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .pillars-grid { grid-template-columns: repeat(4, 1fr); } }
+    .pillar-card {
+      background: var(--color-white); border: 1px solid var(--color-light-alt);
+      padding: 36px 28px; transition: all 0.25s ease; position: relative;
+    }
+    .pillar-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--color-gold); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .pillar-card:hover { box-shadow: 0 12px 40px rgba(11,27,61,0.1); transform: translateY(-2px); }
+    .pillar-card:hover::after { transform: scaleX(1); }
+    .pillar-icon { width: 40px; height: 40px; margin-bottom: 20px; color: var(--color-gold); }
+    .pillar-card h3 {
+      font-family: var(--font-display); font-size: 18px; font-weight: 600;
+      margin-bottom: 12px; color: var(--color-navy); line-height: 1.3;
+    }
+    .pillar-card p { font-size: 14px; color: var(--color-slate); line-height: 1.7; }
+    .capital-badge {
+      display: inline-flex; flex-direction: column; gap: 4px;
+      border: 1px solid rgba(212,175,55,0.25);
+      padding: 20px 28px; margin-top: 48px;
+    }
+    .capital-badge-num {
+      font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--color-navy);
+    }
+    .capital-badge-label {
+      font-size: 12px; color: var(--color-slate-light);
+      letter-spacing: 0.08em; font-weight: 500;
+    }
+
+    /* ── PROCESS ────────────────────────────────────────── */
+    #postup { background: var(--color-navy); padding: var(--section-py) 0; }
+    .process-header { margin-bottom: 72px; }
+    .steps-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+    @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
+    .step-item {
+      padding: 48px 40px; border-top: 1px solid rgba(255,255,255,0.06); position: relative;
+    }
+    @media (min-width: 768px) {
+      .step-item { border-top: none; border-left: 1px solid rgba(255,255,255,0.06); }
+      .step-item:first-child { border-left: none; }
+    }
+    .step-num {
+      font-family: var(--font-display); font-size: 96px; font-weight: 700;
+      color: rgba(212,175,55,0.12); line-height: 1; margin-bottom: 8px; letter-spacing: -0.04em;
+    }
+    .step-tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 16px;
+    }
+    .step-fee-badge {
+      display: inline-block;
+      background: rgba(212,175,55,0.15);
+      border: 1px solid rgba(212,175,55,0.3);
+      color: var(--color-gold);
+      font-size: 12px; font-weight: 600;
+      padding: 4px 12px; margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+    .step-item h3 {
+      font-family: var(--font-display); font-size: 22px; font-weight: 600;
+      color: var(--color-white); margin-bottom: 16px;
+    }
+    .step-item p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+
+    /* ── DOCUMENTS ──────────────────────────────────────── */
+    #dokumenty { background: var(--color-light); padding: var(--section-py) 0; }
+    .docs-intro { display: grid; gap: 40px; margin-bottom: 56px; }
+    @media (min-width: 768px) { .docs-intro { grid-template-columns: 1fr 1fr; align-items: end; gap: 80px; } }
+    .docs-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 600px) { .docs-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .docs-grid { grid-template-columns: repeat(3, 1fr); } }
+    .doc-card {
+      background: var(--color-white); border: 1px solid var(--color-light-alt);
+      padding: 32px 28px; display: flex; flex-direction: column; gap: 16px;
+      transition: all 0.25s ease;
+    }
+    .doc-card:hover { box-shadow: 0 8px 32px rgba(11,27,61,0.08); }
+    .doc-icon { width: 40px; height: 52px; color: var(--color-navy); flex-shrink: 0; }
+    .doc-card-title {
+      font-family: var(--font-display); font-size: 17px; font-weight: 600;
+      color: var(--color-navy); line-height: 1.35;
+    }
+    .doc-card-desc { font-size: 13px; color: var(--color-slate); line-height: 1.6; flex: 1; }
+    .doc-card .btn { align-self: flex-start; padding: 10px 20px; font-size: 12px; }
+
+    /* ── FAQ ────────────────────────────────────────────── */
+    #faq { background: var(--color-navy); padding: var(--section-py) 0; }
+    .faq-layout { display: grid; gap: 60px; }
+    @media (min-width: 900px) { .faq-layout { grid-template-columns: 5fr 7fr; gap: 80px; align-items: start; } }
+    .faq-list { display: flex; flex-direction: column; gap: 2px; }
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%; background: none; border: none; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 0; gap: 16px; text-align: left;
+    }
+    .faq-question-text {
+      font-size: 16px; font-weight: 500; color: var(--color-white);
+      line-height: 1.4; font-family: var(--font-body);
+    }
+    .faq-icon {
+      width: 20px; height: 20px; flex-shrink: 0; color: var(--color-gold);
+      transition: transform 0.3s ease;
+    }
+    .faq-icon.open { transform: rotate(45deg); }
+    .faq-answer {
+      display: none; padding: 0 0 24px;
+      font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.75;
+    }
+    .faq-answer.open { display: block; }
+    .faq-answer strong { color: var(--color-gold); font-weight: 600; }
+
+    /* ── CONTACT ────────────────────────────────────────── */
+    #kontakt {
+      background: var(--color-light); padding: var(--section-py) 0;
+      position: relative; overflow: hidden;
+    }
+    .contact-layout { display: grid; gap: 60px; }
+    @media (min-width: 900px) {
+      .contact-layout { grid-template-columns: 5fr 7fr; gap: 80px; align-items: start; }
+    }
+    .contact-info h2 {
+      font-family: var(--font-display); font-size: clamp(26px, 4vw, 40px); font-weight: 600;
+      color: var(--color-navy); margin-bottom: 20px; line-height: 1.2;
+    }
+    .contact-info p {
+      font-size: 16px; color: var(--color-slate); line-height: 1.75; margin-bottom: 36px;
+    }
+    .contact-points { display: flex; flex-direction: column; gap: 20px; }
+    .contact-point { display: flex; gap: 16px; align-items: flex-start; }
+    .contact-point-icon { width: 20px; height: 20px; color: var(--color-gold); flex-shrink: 0; margin-top: 2px; }
+    .contact-point-text { font-size: 14px; color: var(--color-slate); line-height: 1.6; }
+    .contact-point-text strong {
+      display: block; font-size: 11px; color: var(--color-slate-light);
+      font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px;
+    }
+
+    .contact-form {
+      background: var(--color-white);
+      border: 1px solid var(--color-light-alt);
+      padding: 48px 40px;
+      box-shadow: 0 4px 24px rgba(11,27,61,0.07);
+    }
+    @media (max-width: 480px) { .contact-form { padding: 32px 24px; } }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 600px) {
+      .form-grid { grid-template-columns: 1fr 1fr; }
+      .form-field--full { grid-column: 1 / -1; }
+    }
+    .form-field { display: flex; flex-direction: column; gap: 8px; }
+    .form-field label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--color-slate-light);
+    }
+    .form-field input {
+      background: var(--color-light); border: 1px solid var(--color-light-alt);
+      color: var(--color-navy); font-family: var(--font-body); font-size: 15px;
+      padding: 14px 18px; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      border-radius: 0; width: 100%; -webkit-appearance: none;
+    }
+    .form-field input::placeholder { color: rgba(74,85,104,0.4); }
+    .form-field input:focus { border-color: var(--color-gold); background: var(--color-white); }
+    .form-submit-area { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+    .form-submit-area .btn { align-self: flex-start; }
+    @media (max-width: 480px) { .form-submit-area .btn { width: 100%; justify-content: center; } }
+    .form-trust {
+      font-size: 12px; color: var(--color-slate-light);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .form-trust svg { width: 14px; height: 14px; color: var(--color-gold); flex-shrink: 0; }
+    .form-success { display: none; text-align: center; padding: 48px 24px; }
+    .form-success.show { display: block; }
+    .form-success-icon { width: 56px; height: 56px; margin: 0 auto 24px; color: var(--color-gold); }
+    .form-success h3 {
+      font-family: var(--font-display); font-size: 24px; color: var(--color-navy); margin-bottom: 12px;
+    }
+    .form-success p { font-size: 15px; color: var(--color-slate); }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      background: var(--color-navy-deep); padding: 56px 0 40px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 768px) { .footer-inner { grid-template-columns: 2fr 1fr 1fr; gap: 60px; } }
+    .footer-logo {
+      font-family: var(--font-body); font-size: 16px; font-weight: 600;
+      color: var(--color-white); margin-bottom: 3px; letter-spacing: 0.02em;
+    }
+    .footer-logo em { font-style: italic; font-weight: 300; }
+    .footer-tagline {
+      font-family: var(--font-body); font-size: 10px; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 20px;
+    }
+    .footer-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 320px; }
+    .footer-col h4 {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+      font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--color-gold); }
+    .footer-address { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.8; }
+    .footer-bottom {
+      margin-top: 48px; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .footer-bottom { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+    }
+    .footer-copyright { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .footer-disclaimer {
+      font-size: 11px; color: rgba(255,255,255,0.2);
+      max-width: 480px; line-height: 1.6; text-align: right;
+    }
+    @media (max-width: 767px) { .footer-disclaimer { text-align: left; } }
+
+    /* ── ANIMATIONS ─────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-fade-up { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+    .anim-delay-1 { animation-delay: 0.1s; }
+    .anim-delay-2 { animation-delay: 0.22s; }
+    .anim-delay-3 { animation-delay: 0.38s; }
+    .anim-delay-4 { animation-delay: 0.52s; }
+    .anim-delay-5 { animation-delay: 0.68s; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--color-navy-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--color-gold); }
+  </style>
+</head>
+
+<body x-data="{ menuOpen: false }">
+
+  <!-- ═══════════════ NAV ═══════════════ -->
+  <header id="nav">
+    <div class="container">
+      <nav class="nav-inner">
+        <a href="#hero" class="nav-logo">
+          <span class="nav-logo-name">AP-<em>smart</em>&nbsp;business&nbsp;a.s.</span>
+          <span class="nav-logo-sub">Asset Protection | Distressed Debt</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#reseni">Naše řešení</a></li>
+          <li><a href="#postup">Jak to funguje</a></li>
+          <li><a href="#proc-my">O nás</a></li>
+          <li><a href="#dokumenty">Dokumenty</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+
+        <a href="#kontakt" class="btn btn-gold nav-cta">Nezávazná konzultace</a>
+
+        <button class="hamburger" :class="{ 'open': menuOpen }"
+          @click="menuOpen = !menuOpen" aria-label="Otevřít menu">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-menu" :class="{ 'open': menuOpen }">
+      <a href="#reseni"    @click="menuOpen = false">Naše řešení</a>
+      <a href="#postup"    @click="menuOpen = false">Jak to funguje</a>
+      <a href="#proc-my"   @click="menuOpen = false">O nás</a>
+      <a href="#dokumenty" @click="menuOpen = false">Dokumenty</a>
+      <a href="#kontakt"   @click="menuOpen = false">Kontakt</a>
+      <a href="#kontakt" class="btn btn-gold" @click="menuOpen = false">Nezávazná konzultace</a>
+    </div>
+  </header>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section id="hero">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow anim-fade-up anim-delay-1">
+          Asset Protection | Distressed Debt
+        </div>
+        <h1 class="hero-headline anim-fade-up anim-delay-2">
+          Společně vymůžeme<br /><em>maximum</em> z&nbsp;Vašich dluhopisů.
+        </h1>
+        <p class="hero-subheadline anim-fade-up anim-delay-3">
+          Sjednoťte svůj hlas se stovkami dalších poškozených investorů pod záštitou silné akciové společnosti. Jeden drobný věřitel v insolvenci nic nezmůže — silný blok diktuje podmínky.
+        </p>
+        <div class="hero-actions anim-fade-up anim-delay-4">
+          <a href="#kontakt" class="btn btn-gold hero-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            Nezávazně ověřit moji pohledávku
+          </a>
+          <a href="#postup" class="btn btn-outline hero-btn">Jak to funguje</a>
+        </div>
+        <div class="hero-trust anim-fade-up anim-delay-5">
+          <div class="hero-stat">
+            <span class="hero-stat-num">4 990 Kč</span>
+            <span class="hero-stat-label">Vstupní poplatek — bez skrytých nákladů</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">90&nbsp;%</span>
+            <span class="hero-stat-label">Z vymožené částky pro klienta</span>
+          </div>
+          <div class="hero-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">a.s.</span>
+            <span class="hero-stat-label">Akciová společnost · Praha</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PROBLEM ═══════════════ -->
+  <section id="problem">
+    <div class="container">
+      <div class="problem-intro">
+        <div class="reveal">
+          <span class="section-label section-label--dark">Situace, kterou znáte</span>
+          <p class="problem-quote">
+            „Vaše dluhopisy nejsou spláceny. Emitent přestal komunikovat a neplní závazky. Čas hraje proti vám — majetek může rychle zmizet dříve, než jej kdokoli zajistí."
+          </p>
+          <div class="gold-rule"></div>
+          <p class="section-subtitle">
+            V insolvenčním řízení rozhoduje objem pohledávky a právní tlak. Velké banky a institucionální věřitelé ovládají věřitelský výbor a diktují, jak se zpeněží majetek dlužníka. Pokud nevystupujete jako silný blok, budete přehlasováni.
+          </p>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p style="font-size:15px;color:var(--color-slate);line-height:1.8;margin-bottom:20px;">
+            Situace, kdy emitent přestane vyplácet výnosy a přestane komunikovat, je typickým předstupněm závažné platební neschopnosti. Majetek, který by jinak mohl být zdrojem úhrady pohledávek věřitelů, může být v takovém případě rychle a nevratně znehodnocen nebo převeden.
+          </p>
+          <p style="font-size:15px;color:var(--color-slate);line-height:1.8;">
+            Naším cílem je <strong style="color:var(--color-navy);">co nejdříve zahájit insolvenční řízení, zajistit majetek dlužníka</strong> a prosadit zájmy věřitelů dříve, než bude pozdě. K tomu potřebujeme silný a konsolidovaný věřitelský blok.
+          </p>
+        </div>
+      </div>
+
+      <div class="problem-grid">
+        <div class="problem-card reveal reveal-delay-1">
+          <svg class="problem-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <h3>Samostatný věřitel je snadný cíl</h3>
+          <p>Se pohledávkou v hodnotě statisíců korun nemáte bez institucionálního zastoupení reálnou vyjednávací pozici. Právní kroky jsou nákladné a emitent to dobře ví.</p>
+        </div>
+        <div class="problem-card reveal reveal-delay-2">
+          <svg class="problem-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          <h3>Vlastní právníci jsou drazí</h3>
+          <p>Individuální právní zastoupení v insolvenčním řízení vychází na desítky až stovky tisíc korun — a výsledek přesto není zaručen. Riziko nese klient sám.</p>
+        </div>
+        <div class="problem-card reveal reveal-delay-3">
+          <svg class="problem-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <h3>Čas hraje zásadní roli</h3>
+          <p>Čím déle situace trvá bez právní reakce, tím větší je riziko, že majetek dlužníka bude znehodnocen, převeden nebo jinak nedostupný pro věřitele. Rychlá konsolidace pohledávek je klíčová.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ SOLUTION ═══════════════ -->
+  <section id="reseni">
+    <div class="container">
+      <div class="solution-layout">
+        <div>
+          <span class="section-label">Naše řešení</span>
+          <h2 class="section-title section-title--white">Síla bloku.<br />Institucionální tlak.</h2>
+          <div class="gold-rule"></div>
+          <div class="solution-body">
+            <p>
+              AP-smart business a.s. funguje na principu <strong style="color:var(--color-white);">synergického kolektivního zastupování.</strong> Pohledávky od stovek drobných věřitelů formálně převezmeme, sjednotíme pod jednu hlavičku a vstoupíme do insolvenčního řízení jako jeden dominantní věřitel.
+            </p>
+            <p>
+              Tím získáme sílu prosadit zahájení insolvenčního řízení, ovládnout věřitelský výbor, kontrolovat insolvenčního správce a aktivně řídit zpeněžování majetku dlužníka.
+            </p>
+            <div class="solution-highlight">
+              Vy neplatíte drahé advokáty na hodinovou sazbu. Za fixní vstupní poplatek <strong>4 990 Kč</strong> získáváte přístup ke kompletnímu právnímu servisu prostřednictvím naší specializované externí advokátní kanceláře. Naše odměna je <strong>10 % z vymožené částky</strong> — tedy pouze tehdy, když uspějeme. Vy dostáváte <strong>90 % z každé vymožené koruny.</strong>
+            </div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="bv-header">
+            <div class="bv-col-label-solo">Samostatný věřitel</div>
+            <div class="bv-col-label-ours">AP-smart business a.s.</div>
+          </div>
+          <div class="block-vs">
+            <div class="bv-row">
+              <div class="bv-cell bv-cell--solo">
+                <span class="bv-cell-label">Váha v řízení</span>
+                Minimální — snadno přehlasován
+              </div>
+              <div class="bv-cell bv-cell--ours">
+                <span class="bv-cell-label">Váha v řízení</span>
+                Dominantní blok s kontrolou výboru
+              </div>
+            </div>
+            <div class="bv-row">
+              <div class="bv-cell bv-cell--solo">
+                <span class="bv-cell-label">Náklady na právníka</span>
+                Desítky až stovky tisíc Kč, hodinová sazba
+              </div>
+              <div class="bv-cell bv-cell--ours">
+                <span class="bv-cell-label">Náklady na právníka</span>
+                Fixní vstupní poplatek 4 990 Kč
+              </div>
+            </div>
+            <div class="bv-row">
+              <div class="bv-cell bv-cell--solo">
+                <span class="bv-cell-label">Riziko</span>
+                Platíte předem bez záruky výsledku
+              </div>
+              <div class="bv-cell bv-cell--ours">
+                <span class="bv-cell-label">Riziko</span>
+                Naše odměna závislá na úspěchu
+              </div>
+            </div>
+            <div class="bv-row">
+              <div class="bv-cell bv-cell--solo">
+                <span class="bv-cell-label">Výtěžek pro věřitele</span>
+                Nejistý, nekontrolovaný
+              </div>
+              <div class="bv-cell bv-cell--ours">
+                <span class="bv-cell-label">Výtěžek pro věřitele</span>
+                90 % z vymožené částky do 30 dnů
+              </div>
+            </div>
+            <div class="bv-row">
+              <div class="bv-cell bv-cell--solo">
+                <span class="bv-cell-label">Právní partner</span>
+                Na vlastní pěst nebo drahé AK
+              </div>
+              <div class="bv-cell bv-cell--ours">
+                <span class="bv-cell-label">Právní partner</span>
+                Specializovaná renomovaná externí advokátní kancelář
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ WHY AP-SMART ═══════════════ -->
+  <section id="proc-my">
+    <div class="container">
+      <div class="pillars-header">
+        <div class="reveal">
+          <span class="section-label section-label--dark">Proč AP-smart</span>
+          <h2 class="section-title">Institucionální síla.<br />Sdílený zájem.</h2>
+          <div class="gold-rule"></div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="section-subtitle">
+            Nejsme drobná agentura s minimálním kapitálem. Jsme akciová společnost se sídlem na Jungmannově náměstí v Praze, transparentní vlastnickou strukturou a jasně definovanou odměnou napojenou na váš úspěch. Vyděláme, pouze pokud vymůžeme.
+          </p>
+          <div class="capital-badge">
+            <span class="capital-badge-num">2 000 000 Kč</span>
+            <span class="capital-badge-label">Plně splacený základní kapitál · AP-smart business a.s.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card reveal reveal-delay-1">
+          <svg class="pillar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          <h3>Rychlost akce a Právní úleva</h3>
+          <p>Pro investora v krizi je největší hodnotou klid. Okamžitě přebíráme veškerou administrativní a právní zátěž — vy delegujete problém na nás a necháváte ho za sebou.</p>
+        </div>
+        <div class="pillar-card reveal reveal-delay-2">
+          <svg class="pillar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <h3>Spravedlnost a Právní nekompromisnost</h3>
+          <p>Postupujeme striktně podle insolvenčního zákona a využíváme veškeré dostupné právní mechanismy. Vůči dlužníkům nediskutujeme — hájíme práva těch, kteří byli oklamáni korporátními sliby.</p>
+        </div>
+        <div class="pillar-card reveal reveal-delay-3">
+          <svg class="pillar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+          <h3>Institucionální stabilita a Kredibilita</h3>
+          <p>Akciová společnost s plně splaceným kapitálem 2 000 000 Kč a prestižní pražskou adresou. Stojíme v opozici vůči netransparentním dlužníkům a jsme rovnocenným partnerem pro soudy i insolvenční správce.</p>
+        </div>
+        <div class="pillar-card reveal reveal-delay-4">
+          <svg class="pillar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          <h3>Absolutní férovost a Sdílený úspěch</h3>
+          <p>Naše odměna — 10 % success fee — je přímo navázána na to, co skutečně vymůžeme. Pokud nevyhrajeme, nic dalšího neplatíte. Jsme na jedné lodi a vyděláme pouze tehdy, když uspějeme pro vás.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PROCESS ═══════════════ -->
+  <section id="postup">
+    <div class="container">
+      <div class="process-header reveal">
+        <span class="section-label">Jak to funguje</span>
+        <h2 class="section-title section-title--white">Tři kroky<br />k maximálnímu výtěžku.</h2>
+        <div class="gold-rule"></div>
+        <p class="section-subtitle section-subtitle--white">
+          Od prvního kontaktu k právní akci. Celý proces je navržen tak, aby byl pro vás co nejjednodušší — veškerou právní a analytickou práci odvádíme my.
+        </p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-item reveal reveal-delay-1">
+          <div class="step-num">01</div>
+          <span class="step-tag">Bezplatné posouzení</span>
+          <h3>Ověření pohledávky a dokumentů</h3>
+          <p>Nahrajete smlouvy, cenné papíry a základní údaje do našeho zabezpečeného systému. Náš tým vašeho případ bezplatně posoudí a obratem potvrdí způsobilost pohledávky k zastupování.</p>
+        </div>
+        <div class="step-item reveal reveal-delay-2">
+          <div class="step-num">02</div>
+          <span class="step-tag">Právní sjednocení</span>
+          <div class="step-fee-badge">Vstupní poplatek 4 990 Kč</div>
+          <h3>Podpis smluv a aktivace zastupování</h3>
+          <p>Podepíšete Smlouvu o postoupení pohledávky a Dohodu o úplatě (90 % pro vás). Úhrada administrativního poplatku 4 990 Kč aktivuje okamžité zahájení právních úkonů — naše externí advokátní kancelář vaše cenné papíry fyzicky přepíše a zařadí vás do věřitelského bloku.</p>
+        </div>
+        <div class="step-item reveal reveal-delay-3">
+          <div class="step-num">03</div>
+          <span class="step-tag">Náš boj, Vaše výplata</span>
+          <h3>Insolvenční řízení a výplata 90 %</h3>
+          <p>Naše externí advokátní kancelář vede insolvenční řízení za celý věřitelský blok, ovládne výbor a maximalizuje výtěžnost z majetku dlužníka. Vymožené prostředky vám vyplatíme do 30 dnů od faktického inkasa — plných 90 % bez dalších odečtů.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ DOCUMENTS ═══════════════ -->
+  <section id="dokumenty">
+    <div class="container">
+      <div class="docs-intro">
+        <div class="reveal">
+          <span class="section-label section-label--dark">Dokumenty</span>
+          <h2 class="section-title">Veřejné informace<br />pro věřitele.</h2>
+          <div class="gold-rule"></div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <p class="section-subtitle">
+            Věříme v transparentnost. Níže naleznete veřejně dostupné dokumenty k případu holdingu Wood Seeds s.r.o. Naši klienti mají vždy přístup ke všem relevantním podkladům pro informované rozhodnutí.
+          </p>
+        </div>
+      </div>
+      <div class="docs-grid">
+        <div class="doc-card reveal reveal-delay-1">
+          <svg class="doc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 2h10l6 6v22H4z"/><path d="M14 2v6h6"/>
+            <line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/><line x1="8" y1="22" x2="12" y2="22"/>
+          </svg>
+          <div class="doc-card-title">Zpráva o financování společnosti Wood Seeds s.r.o.</div>
+          <p class="doc-card-desc">Analytická zpráva o finanční situaci emitenta, struktuře dluhopisového programu a identifikovaných rizicích pro věřitele.</p>
+          <a href="#" class="btn btn-gold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Stáhnout
+          </a>
+        </div>
+        <div class="doc-card reveal reveal-delay-2">
+          <svg class="doc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 2h10l6 6v22H4z"/><path d="M14 2v6h6"/>
+            <line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/><line x1="8" y1="22" x2="12" y2="22"/>
+          </svg>
+          <div class="doc-card-title">Uvedení do insolvence společnosti Wood Seeds s.r.o.</div>
+          <p class="doc-card-desc">Dokumentace k podání insolvenčního návrhu, přehled věřitelů, struktury pohledávek a dalšího postupu v řízení.</p>
+          <a href="#" class="btn btn-gold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Stáhnout
+          </a>
+        </div>
+        <div class="doc-card reveal reveal-delay-3">
+          <svg class="doc-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 2h10l6 6v22H4z"/><path d="M14 2v6h6"/>
+            <line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/><line x1="8" y1="22" x2="12" y2="22"/>
+          </svg>
+          <div class="doc-card-title">Informace pro držitele dluhopisů</div>
+          <p class="doc-card-desc">Praktický průvodce pro poškozené věřitele — zákonné lhůty, možnosti řešení a podrobnosti k zastupování v rámci AP-smart business a.s.</p>
+          <a href="#" class="btn btn-gold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Stáhnout
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FAQ ═══════════════ -->
+  <section id="faq">
+    <div class="container">
+      <div class="faq-layout">
+        <div class="reveal">
+          <span class="section-label">Časté dotazy</span>
+          <h2 class="section-title section-title--white">Máte otázky?<br />Máme odpovědi.</h2>
+          <div class="gold-rule"></div>
+          <p class="section-subtitle section-subtitle--white">
+            Transparentnost je jedním z našich základních principů. Pokud zde svou otázku nenajdete, kontaktujte nás přímo — odpovíme do 24 hodin.
+          </p>
+        </div>
+        <div class="faq-list reveal reveal-delay-2" id="faqList">
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span class="faq-question-text">Proč dochází k formálnímu postoupení pohledávky? Neprodat ji náhodou?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-answer">
+              K postoupení pohledávky dochází čistě z procesních a taktických důvodů — abychom mohli v insolvenčním řízení vystupovat jako jeden silný věřitelský blok a prosadit naše zástupce do věřitelského výboru. Pohledávku nám nenecháváte — souběžně podepisujete <strong>Dohodu o úplatě</strong>, která nás zákonně zavazuje vyplatit vám 90 % z každé vymožené koruny do 30 dnů od inkasa.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span class="faq-question-text">Co kryje vstupní poplatek 4 990 Kč?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-answer">
+              Poplatek pokrývá přímé náklady na odborné právní posouzení vašich cenných papírů, jejich fyzický převod (rubopisování) prostřednictvím naší externí specializované advokátní kanceláře a podání přihlášky pohledávky do insolvenčního řízení. Smlouva nabývá platnosti až dnem připsání poplatku — od té chvíle za vás pracuje renomovaný právní partner, jehož individuální najímání by vás stálo násobně více.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span class="faq-question-text">Kdy a jak dostanu své peníze?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-answer">
+              Jakmile insolvenční správce poukáže vymožené prostředky na účet AP-smart business a.s., jsme smluvně povinni do <strong>30 dnů</strong> převést vám 90 % z přijaté částky na vámi uvedený bankovní účet. Postup a průběh řízení vám průběžně komunikujeme.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span class="faq-question-text">Co se stane, pokud se nic nevymůže?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-answer">
+              Naše <strong>success fee 10 %</strong> je podmíněno úspěšným vymožením. Pokud v insolvenčním řízení nedosáhneme žádného plnění, nevzniká vám žádná další platební povinnost nad rámec vstupního administrativního poplatku 4 990 Kč. Jsme na jedné lodi — vyděláme, pouze pokud vymůžeme.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span class="faq-question-text">Proč je AP-smart business a.s. spolehlivý partner?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-answer">
+              Jsme <strong>akciová společnost</strong> s transparentní vlastnickou strukturou a sídlem na prestižní adrese v Praze. Naše odměna je vázána výhradně na úspěch — success fee 10 % platíte pouze tehdy, když skutečně vymůžeme. Vstupní poplatek 4 990 Kč je fixní a předem jasně daný, bez skrytých doložek nebo hodinových sazeb. Naše zájmy a zájmy klientů jsou přesně sladěny.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span class="faq-question-text">Jak rychle musím jednat?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <div class="faq-answer">
+              Čím déle situace trvá bez právní odpovědi, tím větší je riziko, že majetek dlužníka bude nedostupný nebo znehodnocený. Konsolidace pohledávek a příprava právních kroků vyžaduje čas — doporučujeme kontaktovat nás <strong>co nejdříve</strong>, abychom mohli situaci analyzovat a zahájit kroky k ochraně vašich nároků.
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CONTACT ═══════════════ -->
+  <section id="kontakt">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-info reveal">
+          <span class="section-label section-label--dark">Kontakt</span>
+          <h2>Zahajte bezplatné ověření vaší pohledávky.</h2>
+          <p>
+            Vyplňte formulář a ozveme se vám do 24 hodin s posouzením způsobilosti vaší pohledávky. Nic vás nezavazuje — první konzultace je zdarma.
+          </p>
+          <div class="contact-points">
+            <div class="contact-point">
+              <svg class="contact-point-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div class="contact-point-text">
+                <strong>Sídlo</strong>
+                Jungmannovo náměstí 758/21<br />
+                Nové Město, 110 00 Praha<br /><br />
+                IČO: 17961017
+              </div>
+            </div>
+            <div class="contact-point">
+              <svg class="contact-point-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              <div class="contact-point-text">
+                <strong>Právní forma</strong>
+                Akciová společnost (a.s.)<br />Základní kapitál 2 000 000 Kč — plně splacen
+              </div>
+            </div>
+            <div class="contact-point">
+              <svg class="contact-point-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <div class="contact-point-text">
+                <strong>Právní zázemí</strong>
+                Spolupracujeme s renomovanou externí advokátní kanceláří specializovanou na distressed aktiva a insolvenční řízení.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <div class="contact-form">
+            <!-- ╔══════════════════════════════════════════════════╗
+                 ║  NASTAVENÍ FORMULÁŘE                            ║
+                 ║  1. Jděte na https://formspree.io               ║
+                 ║  2. Vytvořte nový formulář (New Form)           ║
+                 ║  3. Zadejte cílový e-mail v dashboardu          ║
+                 ║     (e-mail se NIKDE v kódu neobjevuje)         ║
+                 ║  4. Zkopírujte váš Form ID a nahraďte YOURCODE  ║
+                 ╚══════════════════════════════════════════════════╝ -->
+            <form id="contactForm" action="https://formspree.io/f/YOURCODE" method="POST" onsubmit="handleFormSubmit(event)">
+              <!-- Přesměrování po odeslání (volitelné) -->
+              <input type="hidden" name="_next" value="https://ap-smart.cz/#kontakt" />
+              <!-- Předmět e-mailu, který přijde na váš inbox -->
+              <input type="hidden" name="_subject" value="Nová poptávka — AP-smart business a.s." />
+              <!-- Honeypot antispam (skryté pole, roboti ho vyplní, lidi ne) -->
+              <input type="text" name="_gotcha" style="display:none" />
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="name">Jméno a příjmení</label>
+                  <input type="text" id="name" name="name" placeholder="Jan Novák" required />
+                </div>
+                <div class="form-field">
+                  <label for="phone">Telefon</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+420 777 000 000" required />
+                </div>
+                <div class="form-field form-field--full">
+                  <label for="email">E-mail</label>
+                  <input type="email" id="email" name="email" placeholder="jan.novak@email.cz" required />
+                </div>
+                <div class="form-field form-field--full">
+                  <label for="volume">Objem pohledávky (v Kč)</label>
+                  <input type="text" id="volume" name="volume" placeholder="Např. 500 000 Kč" required />
+                </div>
+              </div>
+              <div class="form-submit-area">
+                <button type="submit" class="btn btn-gold btn-lg">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Odeslat nezávaznou poptávku
+                </button>
+                <p class="form-trust">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Veškeré informace jsou zpracovávány diskrétně.
+                </p>
+              </div>
+            </form>
+            <div class="form-success" id="formSuccess">
+              <svg class="form-success-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <h3>Poptávka odeslána</h3>
+              <p>Děkujeme za váš zájem. Ozveme se do 24 hodin s posouzením vaší pohledávky.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">AP-<em>smart</em>&nbsp;business&nbsp;a.s.</div>
+          <div class="footer-tagline">Asset Protection | Distressed Debt</div>
+          <p class="footer-desc">
+            Transformujeme beznadějné finanční pohledávky ve spravedlivé a efektivní řešení. Sjednocujeme hlasy poškozených investorů a přebíráme na sebe veškeré riziko i zdlouhavé právní bitvy v insolvenčních řízeních.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigace</h4>
+          <ul>
+            <li><a href="#reseni">Naše řešení</a></li>
+            <li><a href="#postup">Jak to funguje</a></li>
+            <li><a href="#proc-my">O nás</a></li>
+            <li><a href="#dokumenty">Dokumenty</a></li>
+            <li><a href="#faq">Časté dotazy</a></li>
+            <li><a href="#kontakt">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kontaktní údaje</h4>
+          <div class="footer-address">
+            AP-smart business a.s.<br />
+            Jungmannovo náměstí 758/21<br />
+            Nové Město, 110 00 Praha<br /><br />
+            IČO: 17961017<br /><br />
+            Základní kapitál:<br />
+            2 000 000 Kč, plně splacen
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2025 AP-smart business a.s. Všechna práva vyhrazena.</p>
+        <p class="footer-disclaimer">
+          Tyto webové stránky mají výhradně informační charakter a nepředstavují investiční poradenství ani právní radu. Veškerá jednání podléhají individuálnímu smluvnímu ujednání. Zpracování osobních údajů probíhá v souladu s GDPR.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav
+    const nav = document.getElementById('nav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) {
+        const t = document.querySelector(this.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    // FAQ accordion
+    function toggleFaq(btn) {
+      const answer = btn.nextElementSibling;
+      const icon = btn.querySelector('.faq-icon');
+      const isOpen = answer.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+      document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('open'));
+      // open clicked (unless it was already open)
+      if (!isOpen) { answer.classList.add('open'); icon.classList.add('open'); }
+    }
+
+    // Form submit
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('contactForm');
+      const success = document.getElementById('formSuccess');
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Odesílám…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) { form.style.display = 'none'; success.classList.add('show'); }
+        else throw new Error();
+      } catch (_) {
+        form.style.display = 'none'; success.classList.add('show');
+      }
+    }
+  </script>
+</body>
+</html>
