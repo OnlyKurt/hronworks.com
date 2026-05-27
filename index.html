@@ -1215,14 +1215,22 @@
       if (!isOpen) { answer.classList.add('open'); icon.classList.add('open'); }
     }
 
-    // Form submit
+// Form submit
     async function handleFormSubmit(e) {
       e.preventDefault();
       const form = document.getElementById('contactForm');
+      
+      // PODMÍNKA: Pokud formulář není správně vyplněn, ukážeme varování a zastavíme akci
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
       const success = document.getElementById('formSuccess');
       const btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
       btn.textContent = 'Odesílám…';
+      
       try {
         const res = await fetch(form.action, {
           method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' }
@@ -1230,6 +1238,8 @@
         if (res.ok) { form.style.display = 'none'; success.classList.add('show'); }
         else throw new Error();
       } catch (_) {
+        // Tady doporučuji uživateli neukazovat falešný úspěch, pokud odeslání selže, 
+        // ale pro zachování vašeho původního chování to necháváme takto:
         form.style.display = 'none'; success.classList.add('show');
       }
     }
